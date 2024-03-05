@@ -8,7 +8,7 @@
     "node": ">=14.0.0"
   },
   "scripts": {
-    "setup": "npm update && npm install",
+    "setup": "yarn update && yarn install",
     "prebuild": "rimraf dist",
     "build": "npx tsc",
     "start": "node dist/server.js",
