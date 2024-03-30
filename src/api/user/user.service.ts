@@ -4,6 +4,7 @@ import config from 'config';
 
 interface UpdateData {
   password?: string
+  profileImage?: string
 }
 
 // CreateUser service

@@ -15,6 +15,7 @@ import hpp from 'hpp';
 import helmet from 'helmet';
 import mongoSanitize from 'express-mongo-sanitize';
 import Router from '../src/routes/index';
+import fileUpload from 'express-fileupload'
 import { getEnvVariable } from './shared/utils/env';
 
 
@@ -29,6 +30,18 @@ app.use(
       return cb(null, true);
     },
     credentials: true,
+  }),
+);
+
+// Image file upload Config
+app.use(
+  fileUpload({
+    useTempFiles: true,
+    tempFileDir: path.join(__dirname, "tmp"),
+    createParentPath: true,
+    limits: {
+      fileSize: 6 * 1024 * 1024 * 8, // 6mb max
+    },
   }),
 );
 
@@ -85,8 +98,7 @@ app.use(flash());
 
 app.use(cookieParser());
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: false }));
 
 app.use('/api/v1', Router);
 

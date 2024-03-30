@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Request, Response, NextFunction } from "express";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import { verifyJwt } from '../utils/jwt';
@@ -9,10 +10,10 @@ export interface AuthenticatedRequest extends Request {
   userId: { id: string };
 }
 
-const authenticate = async (req: Request, res: Response, next: NextFunction) => {
+export const ensureAuthenticate = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const authenticatedReq = req as AuthenticatedRequest;
-    let access_token;
+    let access_token: any;
 
     if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
       access_token = req.headers.authorization.split(' ')[1];
@@ -47,4 +48,3 @@ const authenticate = async (req: Request, res: Response, next: NextFunction) => 
     }
   }
 
-export { authenticate };

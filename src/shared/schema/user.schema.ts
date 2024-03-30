@@ -1,4 +1,4 @@
-import { number, object, string, TypeOf } from 'zod';
+import { number, object, string, TypeOf, z } from 'zod';
 
 export const signupUserSchema = object({
   body: object({
@@ -68,9 +68,44 @@ export const resetPasswordSchema = object({
   }),
 });
 
+export const updateUserSchema = object({
+  params: object({
+    id: string(),
+  }),
+  body: object({
+    fullName: string().optional(),
+    email: string().email('Invalid email address').optional(),
+    username: string().optional(),
+    bio: string().optional(),
+    location: string().optional(),
+    city: string().optional(),
+    profileImage: z.string().optional(),
+    phoneNumber: number().optional(),
+  }),
+});
+
+export const getProfileByIdSchema = object({
+  params: object({
+    id: string(),
+  }),
+});
+
+export const profileLogoSchema = object({
+  params: object({
+    id: string(),
+  }),
+  body: object({
+    profileImage: z.string(),
+  }),
+});
+
 export type CreateUserInput = TypeOf<typeof signupUserSchema>['body'];
 export type LoginUserInput = TypeOf<typeof signinUserSchema>['body'];
 export type VerifyEmailInput = TypeOf<typeof verifyEmailSchema>['params'];
+export type GetProfileByIdInput = TypeOf<typeof getProfileByIdSchema>['params'];
+export type ProfileLogoInput = TypeOf<typeof profileLogoSchema>['params'] &
+TypeOf<typeof profileLogoSchema>['body'];
+export type UpdateUserInput = TypeOf<typeof updateUserSchema>['body'];
 export type resendMailInput = TypeOf<typeof resendMailSchema>['body'];
 export type ForgotPasswordInput = TypeOf<typeof forgotPasswordSchema>['body'];
 export type ResetPasswordInput = TypeOf<typeof resetPasswordSchema>['params'] &

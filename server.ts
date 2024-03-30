@@ -2,13 +2,27 @@ import http from 'http';
 import app from './src/app';
 import dotenv from 'dotenv'
 import logger from './src/shared/utils/logger';
-import express from 'express';
 import { connectDB, disconnectDB } from './src/shared/utils/db';
+import { Server } from 'socket.io';
+import socketHandler from './src/shared/utils/socketHandler';
 import config from './config';
 
 dotenv.config()
 
 const server = http.createServer(app);
+
+// socket io connection
+const io = new Server(server, {
+  cors: {
+    origin: '*',
+    methods: ['GET', 'POST', 'PUT'],
+    // allowedHeaders: ['my-custom-header'],
+    // credentials: true
+  },
+});
+
+socketHandler(io);
+
 
 const startServer = async () => {
   try {
